@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mini Game</title>
+  <script src="https://cdn.firebase.com/js/client/1.1.1/firebase.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+click to play, don't touch anything.
+<div class="example-base example-leaderboard l-demo-container">
+  <table id="leaderboardTable">
+    <tr>
+      <th>Player</th>
+      <th>Score</th>
+    </tr>
+  </table>
+  <footer>
+    <input class="example-leaderboard-name" type="text" id="nameInput" placeholder="Enter a name">
+    <input class="example-leaderboard-score" type="text" disabled id="scoreInput" placeholder="Your score">
+  </footer>
+</div>
+
+<script src="leaderboard.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
