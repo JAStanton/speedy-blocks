@@ -1,71 +1,67 @@
-var LEADERBOARD_SIZE = 5;
+var LeaderBoard = function(firebaseId) {
+  this.scoreListRef_ = new Firebase(firebaseId);
+  this.scoreListView_ = this.scoreListRef_.limit(LeaderBoard.SIZE);
+  this.leaderboardTable_ = document.getElementById("leaderboardTable");
+  this.nameInput_ = document.getElementById("nameInput");
+  this.scoreInput_ = document.getElementById("scoreInput");
+  this.htmlForPath_ = {};
+  this.bindEvents_();
+};
 
-// Create our Firebase reference
-var scoreListRef = new Firebase('https://boiling-fire-7438.firebaseio-demo.com/scoreList');
 
-// Keep a mapping of firebase locations to HTML elements, so we can move / remove elements as necessary.
-var htmlForPath = {};
+LeaderBoard.SIZE = 100;
 
-// Helper function that takes a new score snapshot and adds an appropriate row to our leaderboard table.
-function handleScoreAdded(scoreSnapshot, prevScoreName) {
-  var newScoreRow = $("<tr/>");
-  newScoreRow.append($("<td/>").append($("<em/>").text(scoreSnapshot.val().name)));
-  newScoreRow.append($("<td/>").text(scoreSnapshot.val().score));
+
+LeaderBoard.prototype.bindEvents_ = function() {
+  this.scoreListView_.on('child_moved', this.changedCallback_.bind(this));
+  this.scoreListView_.on('child_changed', this.changedCallback_.bind(this));
+  this.scoreListView_.on('child_added', this.handleScoreAdded_.bind(this));
+  this.scoreListView_.on('child_removed', this.handleScoreRemoved_.bind(this));
+
+  this.nameInput_.addEventListener("keyup", function(evt) {
+    if (evt.keyCode != 13) return;
+    var newScore = Number(this.scoreInput_.value);
+    var name = this.nameInput_.value;
+    this.scoreInput_.value = '';
+    if (name.length === 0) return;
+    var userScoreRef = this.scoreListRef_.child(name);
+    userScoreRef.setWithPriority({ name:name, score:newScore }, newScore);
+  }.bind(this));
+};
+
+
+LeaderBoard.prototype.handleScoreAdded_ =
+    function(scoreSnapshot, prevScoreName) {
+  var newScoreRow = document.createElement("tr");
+  newScoreRow.innerHTML =
+      "<td>" + scoreSnapshot.val().name  + "</td>" +
+      "<td>" + scoreSnapshot.val().score + "</td>";
 
   // Store a reference to the table row so we can get it again later.
-  htmlForPath[scoreSnapshot.name()] = newScoreRow;
+  this.htmlForPath_[scoreSnapshot.name()] = newScoreRow;
 
   // Insert the new score in the appropriate place in the table.
   if (prevScoreName === null) {
-    $("#leaderboardTable").append(newScoreRow);
+    this.leaderboardTable_.appendChild(newScoreRow);
+  } else {
+    var lowerScoreRow = this.htmlForPath_[prevScoreName];
+    this.leaderboardTable_.insertBefore(newScoreRow, lowerScoreRow);
   }
-  else {
-    var lowerScoreRow = htmlForPath[prevScoreName];
-    lowerScoreRow.before(newScoreRow);
-  }
-}
-
-// Helper function to handle a score object being removed; just removes the corresponding table row.
-function handleScoreRemoved(scoreSnapshot) {
-  var removedScoreRow = htmlForPath[scoreSnapshot.name()];
-  removedScoreRow.remove();
-  delete htmlForPath[scoreSnapshot.name()];
-}
-
-// Create a view to only receive callbacks for the last LEADERBOARD_SIZE scores
-var scoreListView = scoreListRef.limit(LEADERBOARD_SIZE);
-
-// Add a callback to handle when a new score is added.
-scoreListView.on('child_added', function (newScoreSnapshot, prevScoreName) {
-  handleScoreAdded(newScoreSnapshot, prevScoreName);
-});
-
-// Add a callback to handle when a score is removed
-scoreListView.on('child_removed', function (oldScoreSnapshot) {
-  handleScoreRemoved(oldScoreSnapshot);
-});
-
-// Add a callback to handle when a score changes or moves positions.
-var changedCallback = function (scoreSnapshot, prevScoreName) {
-  handleScoreRemoved(scoreSnapshot);
-  handleScoreAdded(scoreSnapshot, prevScoreName);
 };
-scoreListView.on('child_moved', changedCallback);
-scoreListView.on('child_changed', changedCallback);
 
-// When the user presses enter on scoreInput, add the score, and update the highest score.
-$("#nameInput").keypress(function (e) {
-  if (e.keyCode == 13) {
-    var newScore = Number($("#scoreInput").val());
-    var name = $("#nameInput").val();
-    $("#scoreInput").val("");
 
-    if (name.length === 0)
-      return;
+LeaderBoard.prototype.handleScoreRemoved_ = function(scoreSnapshot) {
+  var removedScoreRow = this.htmlForPath_[scoreSnapshot.name()];
+  removedScoreRow.remove();
+  delete this.htmlForPath_[scoreSnapshot.name()];
+};
 
-    var userScoreRef = scoreListRef.child(name);
 
-    // Use setWithPriority to put the name / score in Firebase, and set the priority to be the score.
-    userScoreRef.setWithPriority({ name:name, score:newScore }, newScore);
-  }
-});
+LeaderBoard.prototype.changedCallback_ = function(scoreSnapshot, prevScoreName) {
+  this.handleScoreRemoved_(scoreSnapshot);
+  this.handleScoreAdded_(scoreSnapshot, prevScoreName);
+};
+
+
+var leaderboard =
+    new LeaderBoard('https://boiling-fire-7438.firebaseio-demo.com/scoreList');
