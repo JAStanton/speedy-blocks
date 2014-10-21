@@ -11,7 +11,7 @@
   position: relative;
   min-width: 500px;
   overflow: hidden;
-  background: url(subtle.jpg);
+  background: url(../images/subtle.jpg);
 }
 
 #game:not(.berzerk) {
@@ -19,7 +19,7 @@
 }
 
 #game.berzerk {
-  background: url(crazy.gif)
+  background: url(../images/crazy.gif)
 }
 
 #game.berzerk .enemy {
@@ -69,6 +69,8 @@ input.focus {
 
 #leaderboard-table {
   display: inline-block;
+  width: 300px;
+  height: 500px;
 }
 
 table {
