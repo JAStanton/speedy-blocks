@@ -1,7 +1,7 @@
 var LeaderBoard = function(firebaseId) {
   this.scoreListRef_ = new Firebase(firebaseId);
   this.scoreListView_ = this.scoreListRef_.limit(LeaderBoard.SIZE);
-  this.leaderboardTable_ = document.getElementById("leaderboardTable");
+  this.leaderboardTable_ = document.getElementById("leaderboard-table");
   this.nameInput_ = document.getElementById("nameInput");
   this.scoreInput_ = document.getElementById("scoreInput");
   this.htmlForPath_ = {};

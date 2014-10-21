@@ -2,41 +2,42 @@
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   cursor: crosshair;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
-#game-board {
+
+#game {
+  display: inline-block;
   position: relative;
-  display: block;
+  min-width: 500px;
   overflow: hidden;
   background: url(subtle.jpg);
 }
 
-#game-board:not(.crazy) {
+#game:not(.berzerk) {
   -webkit-animation: adjustHue 4s alternate infinite;
 }
 
-#game-board.crazy {
+#game.berzerk {
   background: url(crazy.gif)
 }
 
-#game-board.crazy .enemy {
+#game.berzerk .enemy {
   border: 1px solid white;
 }
 
-#game-board .enemy {
+#game .enemy {
   position: absolute;
   display: block;
   border: 1px solid rgba(255, 255, 255, 0.5);
   z-index: 1;
 }
 
-
-
-#game-board .score-board {
+#game .score-board {
   color: white;
 }
 
-#game-board.end .score-board {
+#game.end .score-board {
   font-size: 250%;
   position: absolute;
   top: 250px;
@@ -53,210 +54,49 @@
     100% { -webkit-filter: hue-rotate(180deg); }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.disabled * {
-  pointer-events: none;
-  opacity: 0.5;
-  -webkit-transition: opacity 750ms;
+input {
+  outline: none;
+  padding: 10px;
+  border: solid 1px #dcdcdc;
+  transition: box-shadow 0.3s, border 0.3s;
 }
 
-.hide {
-  display: none; }
+input:focus,
+input.focus {
+  border: solid 1px blue;
+  box-shadow: 0 0 5px 1px blue;
+}
 
-.l-demo-container {
-  width: 500px;
-  position: absolute;
-  right: 20px;
-  }
+#leaderboard-table {
+  display: inline-block;
+}
 
-.l-popout {
-  margin: 0;
-  padding: 0;
-  border: 0; }
-  .l-popout iframe {
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-    border: 0; }
+table {
+  color: #333;
+  width: 640px;
+  border-collapse:
+  collapse; border-spacing: 0;
+}
 
-.example-chat {
-  background-color: #dfe3ea;
-  border: 1px solid #CCC;
-  overflow: auto;
-  padding: 0px;
-  font-size: 18px;
-  line-height: 22px;
-  color: #666; }
-  .example-chat header {
-    background-color: #EEE;
-    background: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#DDDDDD));
-    background: -webkit-linear-gradient(top, #EEEEEE, #DDDDDD);
-    background: linear-gradient(top, #EEEEEE, #DDDDDD);
-    -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.9), 0px 1px 2px rgba(0, 0, 0, 0.1);
-    box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.9), 0px 1px 2px rgba(0, 0, 0, 0.1);
-    border-radius: 3px 3px 0px 0px;
-    border-bottom: 1px solid #CCC;
-    line-height: 24px;
-    font-size: 12px;
-    text-align: center;
-    color: #999; }
-  .example-chat input {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
-    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
-    padding: 0px 10px;
-    height: 30px;
-    font-size: 18px;
-    width: 100%;
-    font-weight: normal;
-    outline: none; }
-  .example-chat .example-chat-toolbar {
-    background-color: #FFF;
-    padding: 10px;
-    position: relative;
-    border-bottom: 1px solid #CCC; }
-    .example-chat .example-chat-toolbar label {
-      text-transform: uppercase;
-      line-height: 32px;
-      font-size: 14px;
-      color: #999;
-      position: absolute;
-      top: 10px;
-      left: 20px;
-      z-index: 1; }
-    .example-chat .example-chat-toolbar input {
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      border: 1px solid #FFF;
-      padding-left: 100px;
-      color: #999; }
-      .example-chat .example-chat-toolbar input:active, .example-chat .example-chat-toolbar input:focus {
-        color: #1d9dff;
-        border: 1px solid #FFF; }
-  .example-chat ul {
-    list-style: none;
-    margin: 0px;
-    padding: 20px;
-    height: 200px;
-    overflow: auto; }
-    .example-chat ul li {
-      margin-bottom: 10px;
-      line-height: 24px; }
-      .example-chat ul li:last-child {
-        margin: 0px; }
-    .example-chat ul .example-chat-username {
-      margin-right: 10px; }
-  .example-chat footer {
-    display: block;
-    padding: 10px; }
-    .example-chat footer input {
-      border: 1px solid #ced3db;
-      height: 40px; }
-
-#colorholder {
-  width: 480px;
+td, th {
+  border: 1px solid transparent;
   height: 30px;
-  border: 2px solid #424547;
-  margin: 5px auto 0px auto; }
+}
 
-#drawing-canvas {
-  border: 3px solid #999; }
+th {
+  background: #DFDFDF;
+  font-weight: bold;
+}
 
-.colorbox {
-  width: 22px;
-  height: 22px;
-  margin: 1px;
-  display: inline-block;
-  border: 3px solid black; }
+td {
+  background: #FAFAFA;
+  text-align: center;
+}
 
-.example-leaderboard {
-  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-  padding: 20px;
-  border-radius: 5px;
-  background-color: white;
-  overflow: auto;
-  color: #666; }
-  .example-leaderboard table {
-    border-radius: 3px;
-    margin-bottom: 20px;
-    width: 100%;
-    border-collapse: collapse; }
-    .example-leaderboard table th {
-      background: #EEE;
-      border-bottom: 1px solid #CCC;
-      font-size: 12px;
-      color: #999;
-      padding: 5px 10px;
-      text-align: left; }
-    .example-leaderboard table td {
-      border-bottom: 1px solid #EEE;
-      padding: 10px;
-      color: #28a562; }
-      .example-leaderboard table td em {
-        font-style: normal;
-        font-weight: bold;
-        color: #666; }
-    .example-leaderboard table tr:first-child td {
-      background: green; }
-  .example-leaderboard input {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
-    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
-    padding: 0px 10px;
-    height: 30px;
-    font-size: 18px;
-    font-weight: normal;
-    outline: none;
-    border: 1px solid #CCC; }
-    .example-leaderboard input.example-leaderboard-name {
-      width: 186px;
-      margin-right: 10px; }
-    .example-leaderboard input.example-leaderboard-score {
-      width: 300px; }
+tr:nth-child(even) td {
+  background: #F1F1F1;
+}
 
-#highestscore {
-  margin-top: 20px;
-  font-size: 14px; }
-
-/* Presence */
-#presenceDiv {
-  text-align: center; }
-
-/* Tetris */
-.tetris-body {
-  width: 600px; }
-
-#canvas0, #canvas1 {
-  display: inline-block;
-  border: 4px solid #424547; }
-
-#restartButton {
-  margin-top: 5px; }
-
-#gameInProgress {
-  font-size: 14px; }
-
-
+tr:nth-child(odd) td {
+  background: #FEFEFE;
+}

@@ -28,9 +28,9 @@ Point.prototype.getY = function(opt_unit) {
  */
 var Entity = function(initialDirection) {
   this.direction = initialDirection;
-  this.el = document.createElement("div");
+  this.el = document.createElement('div');
   this.el.classList.add('enemy');
-  var board = document.getElementById('game-board');
+  var board = document.getElementById('game');
   board.appendChild(this.el);
 }
 
@@ -50,10 +50,10 @@ Entity.prototype.reset = function() {
 
   this.speed = randomBetween(1, 3);
   this.el.style.backgroundColor = randomColor();
-  this.el.style.width = this.width + "px";
-  this.el.style.height = this.height + "px";
-  this.el.style.top = this.position.getY("px");
-  this.el.style.left = this.position.getX("px");
+  this.el.style.width = this.width + 'px';
+  this.el.style.height = this.height + 'px';
+  this.el.style.top = this.position.getY('px');
+  this.el.style.left = this.position.getX('px');
 };
 
 
@@ -73,8 +73,8 @@ Entity.prototype.render = function() {
     this.position.x -= this.speed;
   }
 
-  this.el.style.top = this.position.getY("px");
-  this.el.style.left = this.position.getX("px");
+  this.el.style.top = this.position.getY('px');
+  this.el.style.left = this.position.getX('px');
 
   // Boundary detection
   if (this.direction == 0) {
@@ -104,22 +104,23 @@ var Game = function() {
   this.playing = false;
   this.width = 500;
   this.height = 500;
-  this.position = new Point(10, 10);
-  this.el = document.createElement("div");
-  this.el.id = 'game-board';
-  this.el.style.width = this.width + "px";
-  this.el.style.height = this.height + "px";
-  this.el.style.top = this.position.getY("px");
-  this.el.style.left = this.position.getX("px");
+  this.position = new Point(0, 0);
+  this.outerElement = document.getElementById('game-board');
+  this.el = document.createElement('div');
+  this.el.id = 'game';
+  this.el.style.width = this.width + 'px';
+  this.el.style.height = this.height + 'px';
+  this.el.style.top = this.position.getY('px');
+  this.el.style.left = this.position.getX('px');
   this.score = 0;
-  this.scoreBoardEl = document.createElement("div");
+  this.scoreBoardEl = document.createElement('div');
   this.scoreBoardEl.classList.add('score-board');
   this.scoreBoardEl.innerHTML = this.score;
   this.directionChangeIntreval;
 
-  this.scoreBoard = document.getElementById("leaderboardTable");
-  this.scoreInput = document.getElementById("scoreInput");
-  this.nameInput = document.getElementById("nameInput");
+  this.scoreBoard = document.getElementById('leaderboard-table');
+  this.scoreInput = document.getElementById('scoreInput');
+  this.nameInput = document.getElementById('nameInput');
 };
 
 Game.prototype.startChangeIntreval = function() {
@@ -127,10 +128,10 @@ Game.prototype.startChangeIntreval = function() {
     var newDirection = randomBetween(0, 5);
     for (var i = 0; i < this.enemies.length; i++) {
       if (newDirection >= 4) {
-        this.el.classList.add('crazy');
+        this.el.classList.add('berzerk');
         this.enemies[i].changeDirection(randomBetween(0, 3));
       } else {
-        this.el.classList.remove('crazy');
+        this.el.classList.remove('berzerk');
         this.enemies[i].changeDirection(newDirection);
       }
     };
@@ -143,7 +144,7 @@ Game.prototype.stopChangeIntreval = function() {
 }
 
 Game.prototype.init = function() {
-  document.body.appendChild(this.el);
+  this.outerElement.insertBefore(this.el, this.scoreBoard);
   this.el.appendChild(this.scoreBoardEl);
   this.enemies = [];
   var initialDirection = randomBetween(0, 3);

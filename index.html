@@ -7,17 +7,26 @@
 </head>
 <body>
 <h1>Click to play</h1>
-<div class="example-base example-leaderboard l-demo-container">
-  <table id="leaderboardTable">
+
+<div id="game-board">
+  <table id="leaderboard-table">
+    <tbody>
+      <tr>
+        <th>Player</th>
+        <th>Score</th>
+      </tr>
+    </tbody>
+    <tfoot>
     <tr>
-      <th>Player</th>
-      <th>Score</th>
+      <td>
+        <input type="text" id="nameInput" placeholder="Enter a name">
+      </td>
+      <td>
+        <input type="text" id="scoreInput" placeholder="Your score" disabled>
+      </td>
     </tr>
+    </tfoot>
   </table>
-  <footer>
-    <input class="example-leaderboard-name" type="text" id="nameInput" placeholder="Enter a name">
-    <input class="example-leaderboard-score" type="text" disabled id="scoreInput" placeholder="Your score">
-  </footer>
 </div>
 
 <script src="leaderboard.js"></script>
